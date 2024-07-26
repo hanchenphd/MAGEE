@@ -10,9 +10,9 @@ Use a glmmkin class object from the null GLMM to perform single variant main eff
 glmm.gei(null.obj, interaction, geno.file, outfile, bgen.samplefile = NULL, 
   interaction.covariates = NULL,  meta.output = FALSE,
   covar.center="interaction.covariates.only", geno.center=TRUE, 
-  MAF.range = c(1e-7, 0.5), MAC.cutoff = 1, miss.cutoff = 1, RSQ.cutoff = 0,
-  missing.method = "impute2mean", nperbatch=100, is.dosage = FALSE,
-  ncores = 1, verbose = FALSE)
+  cat.threshold = 20, MAF.range = c(1e-7, 0.5), MAC.cutoff = 1,
+  miss.cutoff = 1, RSQ.cutoff = 0, missing.method = "impute2mean",
+  nperbatch=100, is.dosage = FALSE, ncores = 1, verbose = FALSE)
 }
 \arguments{
   \item{null.obj}{
@@ -41,6 +41,9 @@ a character value for the centering option for covariates. Possible values are "
 }
   \item{geno.center}{
 a logical switch for centering genotypes before tests. If TRUE, genotypes will be centered to have mean 0 before tests, otherwise raw values will be directly used in tests (default = TRUE).
+}
+  \item{cat.threshold}{
+a numeric cut-off to determine which interaction terms or interaction covariates should be automatically treated as categorical based on the number of levels (unique observations). They will be treated as categorical if the number of levels (unique observations) is less than or equal to this numeric cut-off (default = 20).
 }
   \item{MAF.range}{
 a numeric vector of length 2 defining the minimum and maximum minor allele frequencies of variants that should be included in the analysis (default = c(1e-7, 0.5)).
