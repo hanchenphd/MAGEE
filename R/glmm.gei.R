@@ -1,4 +1,4 @@
-glmm.gei <- function(null.obj, interaction, geno.file, outfile, bgen.samplefile=NULL, interaction.covariates=NULL, meta.output=FALSE, covar.center="interaction.covariates.only", geno.center=TRUE, MAF.range = c(1e-7, 0.5), MAC.cutoff = 1, miss.cutoff = 1, RSQ.cutoff = 0, missing.method = "impute2mean", nperbatch=100, is.dosage = FALSE, ncores = 1, verbose = FALSE){
+glmm.gei <- function(null.obj, interaction, geno.file, outfile, bgen.samplefile=NULL, interaction.covariates=NULL, meta.output=FALSE, covar.center="interaction.covariates.only", geno.center=TRUE, cat.threshold = 20, MAF.range = c(1e-7, 0.5), MAC.cutoff = 1, miss.cutoff = 1, RSQ.cutoff = 0, missing.method = "impute2mean", nperbatch=100, is.dosage = FALSE, ncores = 1, verbose = FALSE){
   if(Sys.info()["sysname"] == "Windows" && ncores > 1) {
     warning("The package doMC is not available on Windows... Switching to single thread...", call. = FALSE)
     ncores <- 1
@@ -66,7 +66,7 @@ glmm.gei <- function(null.obj, interaction, geno.file, outfile, bgen.samplefile=
       null.obj$Sigma_i <- null.obj$Sigma_i[match.id, match.id]
     }
     
-    Ebin<-apply(as.matrix(E[!duplicated(null.obj$id_include),,drop=FALSE]),2,function(x) length(unique(x))<=20)
+    Ebin<-apply(as.matrix(E[!duplicated(null.obj$id_include),,drop=FALSE]),2,function(x) length(unique(x))<=cat.threshold)
     if(any(Ebin)){
       Ecat<-as.matrix(E[!duplicated(null.obj$id_include),Ebin,drop=FALSE])
       strata <- apply(Ecat, 1, paste, collapse = "_")
@@ -694,7 +694,7 @@ glmm.gei <- function(null.obj, interaction, geno.file, outfile, bgen.samplefile=
 
     E <- as.matrix(E[match.id, , drop = FALSE])
     
-    Ebin<-apply(as.matrix(E[!duplicated(null.obj$id_include),,drop=FALSE]),2,function(x) length(unique(x))<=20)
+    Ebin<-apply(as.matrix(E[!duplicated(null.obj$id_include),,drop=FALSE]),2,function(x) length(unique(x))<=cat.threshold)
     if(any(Ebin)){
       Ecat<-as.matrix(E[!duplicated(null.obj$id_include),Ebin,drop=FALSE])
       strata <- apply(Ecat, 1, paste, collapse = "_")
