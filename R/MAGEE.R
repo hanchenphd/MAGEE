@@ -1,4 +1,4 @@
-MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep = "\t", bgen.samplefile = NULL, interaction.covariates = NULL, meta.file.prefix = NULL, MAF.range = c(1e-7, 0.5), AF.strata.range = c(0, 1), MAF.weights.beta = c(1, 25), miss.cutoff = 1, missing.method = "impute2mean", method = "davies", tests = "JF", use.minor.allele = FALSE, auto.flip = FALSE, Garbage.Collection = FALSE, is.dosage = FALSE, ncores = 1){
+MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep = "\t", bgen.samplefile = NULL, interaction.covariates = NULL, meta.file.prefix = NULL, covar.center="interaction.covariates.only", MAF.range = c(1e-7, 0.5), AF.strata.range = c(0, 1), MAF.weights.beta = c(1, 25), miss.cutoff = 1, missing.method = "impute2mean", method = "davies", tests = "JF", use.minor.allele = FALSE, auto.flip = FALSE, Garbage.Collection = FALSE, is.dosage = FALSE, ncores = 1){
   if(Sys.info()["sysname"] == "Windows" && ncores > 1) {
     warning("The package doMC is not available on Windows... Switching to single thread...", call. = FALSE)
     ncores <- 1
@@ -58,7 +58,13 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
       J <- t(sparseMatrix(i=1:length(null.obj$id_include), j=match(null.obj$id_include, unique(null.obj$id_include)[match(sample.id, unique(null.obj$id_include))]), x=1))
     } else match.id <- match(sample.id, null.obj$id_include)
     E <- as.matrix(E[match.id, , drop = FALSE])
-    E <- scale(E, scale = FALSE)
+    if(covar.center == "all") {
+      E <- scale(E, scale = FALSE)
+    } else if(covar.center != "none") {
+      if(!is.null(interaction.covariates)) {
+        E <- cbind(scale(E[,1:qi,drop=F], scale = FALSE), E[,(1+qi):(qi+ei),drop=F])
+      }
+    }
     if(inherits(null.obj, "glmmkin.multi")) {
       residuals <- residuals[match.id, , drop = FALSE]
       match.id <- rep(match.id, n.pheno) + rep((0:(n.pheno-1))*n, each = length(match.id))
@@ -570,7 +576,13 @@ MAGEE <- function(null.obj, interaction, geno.file, group.file, group.file.sep =
       J <- t(sparseMatrix(i=1:length(null.obj$id_include), j=match(null.obj$id_include, unique(null.obj$id_include)[match(sample.id, unique(null.obj$id_include))]), x=1))
     } else match.id <- match(sample.id, null.obj$id_include)
     E <- as.matrix(E[match.id, , drop = FALSE])
-    E <- scale(E, scale = FALSE)
+    if(covar.center == "all") {
+      E <- scale(E, scale = FALSE)
+    } else if(covar.center != "none") {
+      if(!is.null(interaction.covariates)) {
+        E <- cbind(scale(E[,1:qi,drop=F], scale = FALSE), E[,(1+qi):(qi+ei),drop=F])
+      }
+    }
     if(inherits(null.obj, "glmmkin.multi")) {
       residuals <- residuals[match.id, , drop = FALSE]
       match.id <- rep(match.id, n.pheno) + rep((0:(n.pheno-1))*n, each = length(match.id))
@@ -1134,7 +1146,7 @@ fisher_pval <- function(p) {
   pchisq(-2*sum(log(p)), df = 2*length(p), lower.tail = FALSE)
 }
 
-MAGEE.prep <- function(null.obj, interaction, geno.file, group.file, interaction.covariates = NULL, group.file.sep = "\t", auto.flip = FALSE)
+MAGEE.prep <- function(null.obj, interaction, geno.file, group.file, interaction.covariates = NULL, covar.center="interaction.covariates.only", group.file.sep = "\t", auto.flip = FALSE)
 {
   if(!grepl("\\.gds$", geno.file[1])) stop("Error: currently only .gds format is supported in geno.file for MAGEE.prep!")
   if(!inherits(null.obj, c("glmmkin", "glmmkin.multi"))) stop("Error: null.obj must be a class glmmkin or glmmkin.multi object!")
@@ -1185,7 +1197,13 @@ MAGEE.prep <- function(null.obj, interaction, geno.file, group.file, interaction
     J <- NULL
   }
   E <- as.matrix(E[match.id, , drop = FALSE])
-  E <- scale(E, scale = FALSE)
+  if(covar.center == "all") {
+    E <- scale(E, scale = FALSE)
+  } else if(covar.center != "none") {
+    if(!is.null(interaction.covariates)) {
+      E <- cbind(scale(E[,1:qi,drop=F], scale = FALSE), E[,(1+qi):(qi+ei),drop=F])
+    }
+  }
   if(inherits(null.obj, "glmmkin.multi")) {
     residuals <- residuals[match.id, , drop = FALSE]
     match.id <- rep(match.id, n.pheno) + rep((0:(n.pheno-1))*n, each = length(match.id))

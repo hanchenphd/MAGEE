@@ -12,13 +12,15 @@ Use a glmmkin class object from the null GLMM to perform variant set-based main 
 \usage{
 MAGEE(null.obj, interaction, geno.file, group.file,  group.file.sep = "\t", 
       bgen.samplefile = NULL, interaction.covariates = NULL, meta.file.prefix = NULL,
-      MAF.range = c(1e-7, 0.5), AF.strata.range = c(0, 1), MAF.weights.beta = c(1, 25), 
+      covar.center="interaction.covariates.only", MAF.range = c(1e-7, 0.5),
+      AF.strata.range = c(0, 1), MAF.weights.beta = c(1, 25), 
       miss.cutoff = 1, missing.method = "impute2mean", method = "davies", tests = "JF", 
       use.minor.allele = FALSE, auto.flip = FALSE, 
       Garbage.Collection = FALSE, is.dosage = FALSE, ncores = 1)
 
 MAGEE.prep(null.obj, interaction, geno.file, group.file, interaction.covariates = NULL,
-           group.file.sep = "\t", auto.flip = FALSE)
+           covar.center="interaction.covariates.only", group.file.sep = "\t",
+	   auto.flip = FALSE)
            
 MAGEE.lowmem(MAGEE.prep.obj, geno.file = NULL, meta.file.prefix = NULL, 
              MAF.range = c(1e-7, 0.5), AF.strata.range = c(0, 1), 
@@ -51,6 +53,9 @@ a numeric or a character vector indicating the interaction covariates. If a nume
 }
   \item{meta.file.prefix}{
 the prefix for meta-analysis (default = \code{"NULL"}).
+}
+  \item{covar.center}{
+a character value for the centering option for covariates. Possible values are "none", "all", or "interaction.covariates.only". Generally, centering exposures and covariates to have mean 0 before creating interaction terms would make the genetic main effect easier to interpret. However, if a subsequent meta-analysis is expected, then the exposures of interest should not be centered because in that case the genetic main effect may have different interpretations across studies (default = "interaction.covariates.only").
 }
   \item{MAF.range}{
 a numeric vector of length 2 defining the minimum and maximum minor allele frequencies of variants that should be included in the analysis (default = c(1e-7, 0.5)).
