@@ -12,7 +12,7 @@ glmm.gei(null.obj, interaction, geno.file, outfile, bgen.samplefile = NULL,
   covar.center="interaction.covariates.only", geno.center=TRUE, 
   cat.threshold = 20, MAF.range = c(1e-7, 0.5), MAC.cutoff = 1,
   miss.cutoff = 1, RSQ.cutoff = 0, missing.method = "impute2mean",
-  nperbatch=100, is.dosage = FALSE, ncores = 1, verbose = FALSE)
+  nperbatch=1, is.dosage = FALSE, ncores = 1, verbose = FALSE)
 }
 \arguments{
   \item{null.obj}{
@@ -61,7 +61,7 @@ the minimum Rsq value, defined as the ratio of observed and expected genotypic v
 method of handling missing genotypes.Either "impute2mean" or "omit" (default = "impute2mean").
 }
   \item{nperbatch}{
-an integer for how many SNPs should be tested in a batch (default = 100). The computational time can increase dramatically if this value is either small or large. The optimal value for best performance depends on the user's system.
+an integer for how many SNPs should be tested in a batch (default = 1). The computational time can increase dramatically if this value is either small or large. The optimal value for best performance depends on the user's system.
 }
   \item{is.dosage}{
 a logical switch for whether imputed dosage should be used from a GDS \code{geno.file} (default = FALSE).

@@ -38,8 +38,8 @@ morekeywords={}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
-\title{MAGEE: Mixed Model Association Test for GEne-Environment Interaction\\Version 1.4.2}
-\date{July 26, 2024}
+\title{MAGEE: Mixed Model Association Test for GEne-Environment Interaction\\Version 1.4.3}
+\date{July 12, 2025}
 \author{Xinyu Wang\\Human Genetics Center\\Dept. of Biostatistics and Data Science\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: Xinyu.Wang@uth.tmc.edu\\\\Han Chen\\Human Genetics Center\\Department of Epidemiology\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: Han.Chen.2@uth.tmc.edu\\\\Duy Pham\\Human Genetics Center\\Department of Epidemiology\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: duy.t.pham@uth.tmc.edu\\\\Kenneth Westerman\\Department of Medicine\\Clinical and Translational Epidemiology Unit\\Mongan Institute\\Massachusetts General Hospital\\Email: KEWESTERMAN@mgh.harvard.edu\\\\Cong Pan\\Human Genetics Center\\Department of Epidemiology\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: cong.pan@uth.tmc.edu} 
 
 \maketitle
@@ -508,6 +508,12 @@ Initial public release of \textit{MAGEE}.
 \subsection{Version 1.4.2 (July 26, 2024)}
 \begin{enumerate}
 \item Added a new argument "cat.threshold" in \textbf{glmm.gei} to allow users to control the cut-off threshold for interaction terms and interaction covariates to be treated as categorical (thanks to: Simon Wiegrebe).
+\end{enumerate}
+
+\subsection{Version 1.4.3 (July 12, 2025)}
+\begin{enumerate}
+\item Added a new argument "covar.center" in \textbf{MAGEE} and \textbf{MAGEE.prep} to allow users to control whether and how the covariates (including exposures) should be centered.
+\item Changed the default "nperbatch" in \textbf{glmm.gei} from 100 to 1 to avoid linear algebra numeric issues found in the tests.
 \end{enumerate}
 
 \section{Contact}
