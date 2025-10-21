@@ -38,9 +38,9 @@ morekeywords={}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
-\title{MAGEE: Mixed Model Association Test for GEne-Environment Interaction\\Version 1.4.3}
-\date{July 12, 2025}
-\author{Xinyu Wang\\Human Genetics Center\\Dept. of Biostatistics and Data Science\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: Xinyu.Wang@uth.tmc.edu\\\\Han Chen\\Human Genetics Center\\Department of Epidemiology\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: Han.Chen.2@uth.tmc.edu\\\\Duy Pham\\Human Genetics Center\\Department of Epidemiology\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: duy.t.pham@uth.tmc.edu\\\\Kenneth Westerman\\Department of Medicine\\Clinical and Translational Epidemiology Unit\\Mongan Institute\\Massachusetts General Hospital\\Email: KEWESTERMAN@mgh.harvard.edu\\\\Cong Pan\\Human Genetics Center\\Department of Epidemiology\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: cong.pan@uth.tmc.edu} 
+\title{MAGEE: Mixed Model Association Test for GEne-Environment Interaction\\Version 1.4.4}
+\date{October 20, 2025}
+\author{Xinyu Wang\\Human Genetics Center\\Dept. of Biostatistics and Data Science\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: Xinyu.Wang@uth.tmc.edu\\\\Han Chen\\Human Genetics Center\\Department of Epidemiology\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: hanchenphd@gmail.com\\\\Duy Pham\\Human Genetics Center\\Department of Epidemiology\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: duy.t.pham@uth.tmc.edu\\\\Kenneth Westerman\\Department of Medicine\\Clinical and Translational Epidemiology Unit\\Mongan Institute\\Massachusetts General Hospital\\Email: KEWESTERMAN@mgh.harvard.edu\\\\Cong Pan\\Human Genetics Center\\Department of Epidemiology\\School of Public Health\\The University of Texas Health Science Center at Houston\\Email: cong.pan@uth.tmc.edu} 
 
 \maketitle
 \newpage
@@ -142,6 +142,8 @@ Both \textbf{MAGEE} and \textbf{glmm.gei} requires a "glmmkin" or "glmmkin.multi
 library(GMMAT)
 GRM.file <- system.file("extdata", "GRM.txt.bz2", package = "MAGEE")
 GRM <- as.matrix(read.table(GRM.file, check.names = FALSE))
+pheno.file <- system.file("extdata", "pheno.txt", package = "MAGEE")
+pheno <- read.table(pheno.file, header = TRUE)
 model0 <- glmmkin(disease ~ age + sex, data = pheno, kins = GRM,
                   id = "id", family = binomial(link = "logit"))
 @
@@ -226,11 +228,12 @@ The first column contains the group name (group) followed by the number of varia
 <<MAGEEmageegds, eval=FALSE, echo=TRUE>>=
 geno.file <- system.file("extdata", "geno.gds", package = "MAGEE")
 group.file <- system.file("extdata", "SetID.withweights.txt", 
-                          package = "MAGEE")
+             package = "MAGEE")
 meta.files.prefix <- tempfile()
+MAGEE(model0, interaction='sex', geno.file, group.file, 
+             meta.files.prefix = meta.files.prefix)
 MAGEE.meta(meta.files.prefix = meta.files.prefix,  
-                   group.file=group.file,
-                    tests=c("JV", "JF", "JD"))
+             group.file=group.file, tests=c("JV", "JF", "JD"))
 @
 The first argument in \textbf{MAGEE.meta} is a vector of intermediate files' prefix with length equal to the number of studies. The argument "group.file" is the name of the group definition file. The users can choose one or more test types as "IV", "IF", "JV", "JF", and "JD" in the "tests" argument. 
 The \textbf{MAGEE.meta} function returns a data.frame object for both GDS and BGEN genotype file inputs. Below are examples for the first 5 rows of the example output: 
@@ -516,8 +519,14 @@ Initial public release of \textit{MAGEE}.
 \item Changed the default "nperbatch" in \textbf{glmm.gei} from 100 to 1 to avoid linear algebra numeric issues found in the tests.
 \end{enumerate}
 
+\subsection{Version 1.4.4 (October 20, 2025)}
+\begin{enumerate}
+\item Fixed a minor bug in fitglmm.cpp due to deprecated "arma::is\_finite" in Armadillo 15.
+\item Fixed minor issues in the vignette (thanks to: Dan Gealow).
+\end{enumerate}
+
 \section{Contact}
-Please refer to the R help document of \textit{MAGEE} for specific questions about each function. For comments, suggestions, bug reports and questions, please contact Han Chen (Han.Chen.2@uth.tmc.edu). For bug reports, please include an example to reproduce the problem without having to access your confidential data.
+Please refer to the R help document of \textit{MAGEE} for specific questions about each function. For comments, suggestions, bug reports and questions, please contact Han Chen (hanchenphd@gmail.com). For bug reports, please include an example to reproduce the problem without having to access your confidential data.
 
 \section{Acknowledgments}
 This work was supported by National Institutes of Health (NIH) grants R00 HL130593 and R01 HL145025.

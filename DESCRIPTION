@@ -1,9 +1,9 @@
 Package: MAGEE
-Version: 1.4.3
-Date: 2025-07-12
+Version: 1.4.4
+Date: 2025-10-20
 Title: Mixed Model Association Test for GEne-Environment Interaction
 Authors@R: c(person("Xinyu", "Wang", role = "aut", email = "xinyu.wang@uth.tmc.edu"),
-             person("Han", "Chen", role = c("aut", "cre"), email = "han.chen.2@uth.tmc.edu"),
+             person("Han", "Chen", role = c("aut", "cre"), email = "hanchenphd@gmail.com"),
              person("Duy", "Pham", role = "aut", email = "duy.t.pham@uth.tmc.edu"),
              person("Kenneth", "Westerman", role = "ctb", email = "KEWESTERMAN@mgh.harvard.edu"),
              person("Cong", "Pan", role="aut", email = "cong.pan@uth.tmc.edu"),
@@ -31,4 +31,4 @@ Author: Xinyu Wang [aut],
     code used in the included Zstandard (zstd) library),
   Meta Platforms, Inc. and affiliates [cph] (Copyright holder of included
     Zstandard (zstd) library)
-Maintainer: Han Chen <han.chen.2@uth.tmc.edu>
+Maintainer: Han Chen <hanchenphd@gmail.com>
