@@ -1,5 +1,5 @@
 /*  MAGEE : An R Package for Mixed Model Association Test for GEne-Environment Interaction
- *  Copyright (C) 2020--2024  Xinyu Wang, Han Chen, Duy T. Pham
+ *  Copyright (C) 2020--2025  Xinyu Wang, Han Chen, Duy T. Pham
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -504,7 +504,7 @@ extern "C"
 
                 for (size_t s = 0; s < STAT_INT.size(); s++) {
                     PVAL_INT[s] = Rf_pchisq(STAT_INT[s], ei, 0, 0);
-                    if (is_finite(PVAL_MAIN[s])) {
+                    if (isfinite(PVAL_MAIN[s])) {
                       PVAL_JOINT[s] = Rf_pchisq(STAT_JOINT[s], 1+ei, 0, 0);
                     }
                   } 

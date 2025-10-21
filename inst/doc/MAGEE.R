@@ -38,6 +38,8 @@
 ## library(GMMAT)
 ## GRM.file <- system.file("extdata", "GRM.txt.bz2", package = "MAGEE")
 ## GRM <- as.matrix(read.table(GRM.file, check.names = FALSE))
+## pheno.file <- system.file("extdata", "pheno.txt", package = "MAGEE")
+## pheno <- read.table(pheno.file, header = TRUE)
 ## model0 <- glmmkin(disease ~ age + sex, data = pheno, kins = GRM,
 ##                   id = "id", family = binomial(link = "logit"))
 
@@ -88,11 +90,12 @@
 ###################################################
 ## geno.file <- system.file("extdata", "geno.gds", package = "MAGEE")
 ## group.file <- system.file("extdata", "SetID.withweights.txt", 
-##                           package = "MAGEE")
+##              package = "MAGEE")
 ## meta.files.prefix <- tempfile()
+## MAGEE(model0, interaction='sex', geno.file, group.file, 
+##              meta.files.prefix = meta.files.prefix)
 ## MAGEE.meta(meta.files.prefix = meta.files.prefix,  
-##                    group.file=group.file,
-##                     tests=c("JV", "JF", "JD"))
+##              group.file=group.file, tests=c("JV", "JF", "JD"))
 
 
 ###################################################
